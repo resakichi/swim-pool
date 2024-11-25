@@ -16,7 +16,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((authz) -> authz
-                    .requestMatchers("/h2-console/**").permitAll() // Разрешаем доступ к консоли H2
+                    .requestMatchers("/h2-console/**").permitAll()
+                    .requestMatchers("/").permitAll() // Разрешаем доступ к консоли H2
                     .anyRequest().authenticated()) // Все остальные запросы требуют аутентификации
             .formLogin(Customizer.withDefaults()); // Включаем форму логина
         

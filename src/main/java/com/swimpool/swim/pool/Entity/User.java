@@ -2,7 +2,6 @@ package com.swimpool.swim.pool.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,7 +31,7 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user")
     private Client clientId;
 
     public User(){}

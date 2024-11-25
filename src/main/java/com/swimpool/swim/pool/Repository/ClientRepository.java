@@ -7,5 +7,6 @@ import com.swimpool.swim.pool.Entity.Client;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long>{
-    
+    Client findByEmail(String email);
+    Client findByPhone(String phone);
 }
