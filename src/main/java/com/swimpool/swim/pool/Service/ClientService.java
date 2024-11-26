@@ -1,6 +1,5 @@
 package com.swimpool.swim.pool.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.swimpool.swim.pool.Entity.Client;
@@ -10,11 +9,13 @@ import com.swimpool.swim.pool.Repository.UserRepository;
 
 @Service
 public class ClientService {
-    @Autowired
-    private ClientRepository clientRepository;
-    
-    @Autowired
-    private UserRepository userRepository;
+    private final ClientRepository clientRepository;
+    private final UserRepository userRepository;
+
+    public ClientService(ClientRepository clientRepository, UserRepository userRepository) {
+        this.clientRepository = clientRepository;
+        this.userRepository = userRepository;
+    }
 
     public Client getById(Long id){
         return clientRepository.findById(id).get();

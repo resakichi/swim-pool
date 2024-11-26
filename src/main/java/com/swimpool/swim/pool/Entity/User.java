@@ -1,5 +1,12 @@
 package com.swimpool.swim.pool.Entity;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -9,44 +16,109 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "auth_data")
-public class User {
+public class User implements UserDetails{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, name = "login")
     private String login;
     
-    @Column(nullable = false)
+    @Column(nullable = false, name = "password")
     @JsonIgnore
-    private String passwordHash;
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "role")
     private UserRole role;
 
-    @OneToOne(mappedBy = "user")
-    private Client clientId;
+    @Column(nullable = false, name = "name")
+    private String name;
+
+    @Column(unique = true, nullable = false, name = "phone")
+    private String phone;
+
+    @Column(unique = true, nullable = false, name = "email")
+    private String email;
+
+    public User(String login, String password, UserRole role, String name, String phone, String email) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+    }
+
 
     public User(){}
 
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+
+    @Override
+    public String toString() {
+        return "name : \"" + name + "\", phone : \"" + phone + "\", email : \"" + email + "\"";
+    }
+
+    
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
     public Long getId() {
         return id;
     }
 
-    public String getLogin(){
-        return login;
+
+    public String getName() {
+        return name;
     }
 
-    public String getPasswordHash(){
-        return passwordHash;
+
+    public String getPhone() {
+        return phone;
+    }
+
+
+    public String getEmail() {
+        return email;
     }
 
     public UserRole getRole(){
