@@ -1,10 +1,14 @@
 package com.swimpool.swim.pool.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.swimpool.swim.pool.DTO.UpdateUserRequest;
 import com.swimpool.swim.pool.Entity.User;
 import com.swimpool.swim.pool.Repository.UserRepository;
 
@@ -43,6 +47,33 @@ public class UserService {
 
     public UserDetailsService userDetailsService() {
         return this::getByLogin;
+    }
+
+    public String getAllUsers(){
+        List<User> allUsers = repository.findAll();
+        String result = allUsers.stream()
+        .map(String::valueOf)
+        .collect(Collectors.joining(", ", "[","]"));
+        return result;
+    }
+
+    public String getById(Long id){
+        var user = repository.findById(id);
+        if (!user.isEmpty()) {
+            return user.toString();
+        }
+        return "User not found";
+    }
+
+    public User updateUser(UpdateUserRequest request){
+        var user = getCurrentUser();
+
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPhone(request.getPhone());
+
+        save(user);
+        return user;
     }
 
     public User getCurrentUser(){

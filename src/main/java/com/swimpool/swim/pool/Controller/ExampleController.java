@@ -21,7 +21,7 @@ public class ExampleController {
     @GetMapping
     @Operation(summary = "Доступен только авторизованным пользователям")
     public String example() {
-        return "Hello, world!";
+        return service.getCurrentUser().toString();
     }
 
     @GetMapping("/admin")

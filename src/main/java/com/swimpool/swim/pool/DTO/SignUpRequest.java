@@ -26,6 +26,7 @@ public class SignUpRequest {
     private String phone;
 
     @Schema(description = "Name user", example = "Jack")
+    @NotBlank(message = "Имя не может быть пустым")
     private String name;
     
     @Schema(description = "Password user", example = "password")
@@ -65,17 +66,17 @@ public class SignUpRequest {
     public String getPhone() {
         return phone;
     }
-  /*   public boolean setPhone(String phone) {
+    public void setPhone(String phone) {
         var matcher = VALID_PHONE_NUMBER_REGEX.matcher(phone);
         if (matcher.matches()) {
             this.phone = phone;
-            return true;
+            //return true;
         }
-        return false;
-    } */
-    public void setPhone(String phone){
-        this.phone = phone;
+        //return false;
     }
+    /* public void setPhone(String phone){
+        this.phone = phone;
+    } */
 
     public String getName() {
         return name;

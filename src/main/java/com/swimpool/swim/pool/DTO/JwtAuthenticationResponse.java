@@ -13,4 +13,13 @@ public class JwtAuthenticationResponse {
 
     public JwtAuthenticationResponse() {
     }
+
+    public String getToken(){
+        return token;
+    }
+
+    @Override
+    public String toString() {
+        return "JwtAuthenticationResponse [token=" + token + "]";
+    }
 }
