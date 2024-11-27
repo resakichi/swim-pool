@@ -30,7 +30,6 @@ public class AuthenticationService {
         var user = new User(request.getLogin(), request.getPassword(), UserRole.USER, 
                             request.getName(), request.getPhone(), request.getEmail());
         userService.create(user);
-
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);
     }
