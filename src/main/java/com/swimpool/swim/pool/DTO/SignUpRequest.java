@@ -35,7 +35,7 @@ public class SignUpRequest {
 
     @Transient
     private final Pattern VALID_PHONE_NUMBER_REGEX = 
-    Pattern.compile("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}", Pattern.CASE_INSENSITIVE);
+    Pattern.compile("^\\+?\\d{10,15}$");
 
     public SignUpRequest() {
     }
@@ -66,13 +66,13 @@ public class SignUpRequest {
     public String getPhone() {
         return phone;
     }
-    public void setPhone(String phone) {
+    public boolean setPhone(String phone) {
         var matcher = VALID_PHONE_NUMBER_REGEX.matcher(phone);
         if (matcher.matches()) {
             this.phone = phone;
-            //return true;
+            return true;
         }
-        //return false;
+        return false;
     }
     /* public void setPhone(String phone){
         this.phone = phone;
