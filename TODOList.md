@@ -8,5 +8,5 @@ Order
 
 - [ ] all
 - [ ] available
-- [ ] reserve
+- [x] reserve
 - [ ] cancel

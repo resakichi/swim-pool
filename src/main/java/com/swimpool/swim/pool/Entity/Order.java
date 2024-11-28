@@ -1,6 +1,7 @@
 package com.swimpool.swim.pool.Entity;
 
-import java.sql.Timestamp;
+//import java.sql.LocalDateTime;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,7 +24,7 @@ public class Order {
     private Long id;
 
     @Column(nullable = false)
-    private Timestamp date;
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -32,7 +33,7 @@ public class Order {
 
     public Order(){}
 
-    public Order(Long id, Timestamp date, User user) {
+    public Order(Long id, LocalDateTime date, User user) {
         this.id = id;
         this.date = date;
         this.user = user;
@@ -46,11 +47,11 @@ public class Order {
         this.id = id;
     }
 
-    public void setDate(Timestamp date){
+    public void setDate(LocalDateTime date){
         this.date = date;
     }
 
-    public Timestamp getDate(){
+    public LocalDateTime getDate(){
         return date;
     }
 
@@ -60,5 +61,10 @@ public class Order {
 
     public User getUser(){
         return user;
+    }
+
+    @Override
+    public String toString() {
+        return "{\"id\" = \"" + id + "\", \"date\" = \"" + date + "\", \"user\" = " + user.toString() + "}";
     }
 }

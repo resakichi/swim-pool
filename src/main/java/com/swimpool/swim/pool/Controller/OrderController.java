@@ -3,11 +3,13 @@ package com.swimpool.swim.pool.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.swimpool.swim.pool.Repository.OrderRepository;
+import com.swimpool.swim.pool.DTO.OrderRequest;
+import com.swimpool.swim.pool.Repository.OrderEntityRepository;
 import com.swimpool.swim.pool.Service.OrderService;
 
-import java.sql.Timestamp;
+import jakarta.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/timetable")
 public class OrderController {
 
-    private final OrderService orderService;
+    @Autowired
+    private OrderService orderService;
 
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
+    @Autowired
+    private OrderEntityRepository repository;
 
     @GetMapping("/all")
     public String getAll(@RequestParam String param) {
@@ -36,20 +38,14 @@ public class OrderController {
     }
     
     @PostMapping("/reserve")
-    public String reserve(@RequestBody String entity) {
-        //TODO: process POST request
-        
-        return entity;
+    public String reserve(@RequestBody @Valid OrderRequest request) {
+        return orderService.reserve(request).toString();
     }
 
     @GetMapping("/cancel")
     public String cancel(@RequestParam String param) {
         return new String();
     }
-    
-    /* @GetMapping("/test")
-    public int getMethodName() {
-        return orderService.countOrdersOnDate(new Timestamp(System.currentTimeMillis()));
-    } */
+
     
 }

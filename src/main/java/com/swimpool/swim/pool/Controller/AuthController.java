@@ -1,5 +1,6 @@
 package com.swimpool.swim.pool.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +20,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 @Tag(name = "Аутентификация")
 public class AuthController {
-    private final AuthenticationService authenticationService;
-
-    public AuthController(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
+    
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")

@@ -1,5 +1,6 @@
 package com.swimpool.swim.pool.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,18 +14,25 @@ import com.swimpool.swim.pool.Entity.UserRole;
 
 @Service
 public class AuthenticationService {
-    private final UserService userService;
-    private final JwtService jwtService;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private UserService userService;
 
-    public AuthenticationService(UserService userService, JwtService jwtService, PasswordEncoder passwordEncoder,
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    /* public AuthenticationService(UserService userService, JwtService jwtService, PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-    }
+    } */
 
     public JwtAuthenticationResponse signUp(SignUpRequest request){
         var user = new User(request.getLogin(), request.getPassword(), UserRole.USER, 

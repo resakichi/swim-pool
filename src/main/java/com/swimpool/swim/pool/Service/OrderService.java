@@ -1,53 +1,51 @@
 package com.swimpool.swim.pool.Service;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.swimpool.swim.pool.DTO.OrderRequest;
 import com.swimpool.swim.pool.Entity.Order;
-import com.swimpool.swim.pool.Repository.OrderRepository;
+import com.swimpool.swim.pool.Repository.OrderEntityRepository;
 
 @Service
 public class OrderService {
-    private final OrderRepository repository;
+    @Autowired
+    private OrderEntityRepository repository;
+
+    @Autowired
+    private UserService userService;
     private static final LocalTime openingHour = LocalTime.of(10, 0);
     private static final LocalTime closingHour = LocalTime.of(20, 0);
 
-    public OrderService(OrderRepository repository) {
-        this.repository = repository;
-    }
 
-    public Order save(Order order){
-        return repository.save(order);
-    }
-
-    /* public Order reserve(Order order){
-        var date = order.getDate().toLocalDateTime().toLocalTime();
+    public Order reserve(OrderRequest request){
+        var date = request.getDateTime().toLocalTime();
         if(!date.isBefore(openingHour) && !date.isAfter(closingHour)){
-            if (checkOrdersOnDate(order.getDate())){
-            
+            if (repository.countOrdersOnTime(request.getDateTime()) < 10){
+                var order = new Order();
+                order.setDate(request.getDateTime());
+                order.setUser(userService.getCurrentUser());
+                repository.save(order);
+                return order;
+            }else{
+                System.out.println("ЗАНЯТО");
             }
+        }else{
+            System.out.println("NOT IN TIME");
+            //TODO Сделать исключения 
         }
-        
-    } */
+        return null;
+    }
 
-    /* public boolean checkOrdersOnDate(Timestamp date){
-        if (repository.countOrdersOnDate(date) < 10){
-            return true;
-        }
-        return false;
-    }  */
 
     /* public Integer countOrdersOnDate(Timestamp date){
         var openingHour = date.toLocalDateTime().with(LocalTime.MIN);
-        openingHour.plus(10, ChronoUnit.HOURS);
+        openingHour = openingHour.plus(10, ChronoUnit.HOURS);
 
         var closingHour = date.toLocalDateTime().with(LocalTime.MIN);
-        closingHour.plus(20, ChronoUnit.HOURS);
+        closingHour = closingHour.plus(20, ChronoUnit.HOURS);
         return repository.countOrdersOnDate(openingHour, closingHour).get();
     } */
 }
