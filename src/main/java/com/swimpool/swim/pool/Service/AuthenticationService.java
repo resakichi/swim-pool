@@ -25,6 +25,7 @@ public class AuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    //Регистрация
     public String signUp(SignUpRequest request){
         var encodedPassword = passwordEncoder.encode(request.getPassword());
         var user = new User(request.getLogin(), encodedPassword, UserRole.USER, 
@@ -34,6 +35,7 @@ public class AuthenticationService {
         return "{\"token : \"" + jwtService.generateToken(user) + "\"}";
     }
 
+    //Авторизация
     public String signIn(SignInRequest request){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
             request.getLogin(), request.getPassword()));
@@ -42,7 +44,6 @@ public class AuthenticationService {
         .userDetailsService()
         .loadUserByUsername(request.getLogin());
 
-        var jwt = jwtService.generateToken(user);
         return "{\"token : \"" + jwtService.generateToken(user) + "\"}";
     }
 }

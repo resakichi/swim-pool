@@ -3,6 +3,7 @@ package com.swimpool.swim.pool.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,11 +15,8 @@ import com.swimpool.swim.pool.Repository.UserRepository;
 
 @Service
 public class UserService {
-    private final UserRepository repository;
-
-    public UserService(UserRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private UserRepository repository;
 
     public User save(User user){
         return repository.save(user);
@@ -32,6 +30,7 @@ public class UserService {
         return save(user);
     }
 
+    //Проверка полей на совпадения
     private void checkDuplicate(User user){
 
         if (repository.existsByEmail(user.getEmail())){
@@ -43,6 +42,7 @@ public class UserService {
         }
     }
 
+    //Получение пользователя по логину
     public User getByLogin(String login){
         return repository.findByLogin(login)
         .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
@@ -52,6 +52,7 @@ public class UserService {
         return this::getByLogin;
     }
 
+    //Получение всех пользователей
     public String getAllUsers(){
         List<User> allUsers = repository.findAll();
         String result = allUsers.stream()
@@ -60,6 +61,7 @@ public class UserService {
         return result;
     }
 
+    //Поиск по идентификатору
     public String getById(Long id){
         var user = repository.findById(id);
         if (!user.isEmpty()) {
@@ -68,6 +70,7 @@ public class UserService {
         return "User not found";
     }
 
+    //Обновление данных
     public User updateUser(UpdateUserRequest request){
         var user = getCurrentUser();
 
@@ -80,6 +83,7 @@ public class UserService {
         return user;
     }
 
+    //Получение текущего пользователя
     public User getCurrentUser(){
         var login = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByLogin(login);

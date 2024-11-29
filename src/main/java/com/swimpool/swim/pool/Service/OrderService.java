@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.swimpool.swim.pool.DTO.CancelOrderRequest;
 import com.swimpool.swim.pool.DTO.OrderRequest;
 import com.swimpool.swim.pool.Entity.Order;
 import com.swimpool.swim.pool.Repository.OrderEntityRepository;
@@ -126,8 +127,8 @@ public class OrderService {
     }
 
     //Отмена записи
-    public void cancelOrder(Long id){
-        repository.removeById(id);
+    public void cancelOrder(CancelOrderRequest request){
+        repository.removeById((long) request.getOrderId());
     }
 
     //Поиск по имени и дате

@@ -25,10 +25,12 @@ public class JwtService {
     @Value("${token.signin.key}")
     private String jwtSigninKey;
     
+    //Получение логина из токенв
     public String extractLogin(String token){
         return extractClaim(token, Claims::getSubject);
     }
 
+    //Генерация токена
     public String generateToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
         if (userDetails instanceof User customUserDetails){
@@ -39,16 +41,19 @@ public class JwtService {
         return generateToken(claims, userDetails);
     }
 
+    //Проверка токена
     public boolean isTokenValid(String token, UserDetails userDetails){
         final String login = extractLogin(token);
         return (login.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
+    //Извлечение параметра из токена
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers){
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
 
+    //Генерация токена с параметрами
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
         return Jwts.builder()
         .claims().empty().add(extraClaims)
@@ -58,6 +63,7 @@ public class JwtService {
         .and().signWith(getSigninKey()).compact();
     }
 
+    //Проврка просроченности токена
     private boolean isTokenExpired(String token){
         return extractExpiration(token).before(new Date());
     }
@@ -66,6 +72,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    //Извлечение всех параметров
     private Claims extractAllClaims(String token){
         return Jwts.parser()
             .verifyWith((SecretKey) getSigninKey())
