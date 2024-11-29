@@ -29,6 +29,7 @@ public class OrderEntityRepository {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
+    //Подсчет записей по часам на определённую дату
     public Map<Integer, Long> countEntitiesPerHour(LocalDate date) {
         String queryString = "SELECT HOUR(e.date) AS hour, COUNT(*) as count "
                            + "FROM Order e "
@@ -51,6 +52,7 @@ public class OrderEntityRepository {
         return resultMap;
     }
 
+    //Подсчёт записей на определёноые время
     public Integer countOrdersOnTime(LocalDateTime date){
         String queryString = "SELECT COUNT(*) " +
                             "FROM Order o " + 

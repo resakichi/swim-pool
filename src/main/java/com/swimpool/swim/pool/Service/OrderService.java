@@ -130,6 +130,7 @@ public class OrderService {
         repository.removeById(id);
     }
 
+    //Поиск по имени и дате
     public Order findByNameDate(String name, LocalDateTime date){
         return repository.findByDateName(date, name);
     }

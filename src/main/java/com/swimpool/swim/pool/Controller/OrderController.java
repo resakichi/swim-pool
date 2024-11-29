@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.swimpool.swim.pool.DTO.OrderRequest;
 import com.swimpool.swim.pool.Service.OrderService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
 import java.time.LocalDate;
@@ -28,23 +29,26 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Operation(summary = "Получение всех записей на дату")
     @GetMapping("/all")
     public String getAll(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate param) {
         return orderService.allByDate(param);
     }
     
+    @Operation(summary = "Получение списка свободного времени на дату")
     @GetMapping("/available")
     public String getAvailable(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate param) {
         return orderService.available(param);
     }
 
+    @Operation(summary = "Поиск по имени и дате")
     @GetMapping("/find")
     public String findByNameDate(@RequestParam("name") String name,
     @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
         return orderService.findByNameDate(name, date).toString();
     }
     
-    
+    @Operation(summary = "Бронирование времени")
     @PostMapping("/reserve")
     public String reserve(@RequestBody @Valid OrderRequest request) {
         try {
@@ -54,6 +58,7 @@ public class OrderController {
         }
     }
 
+    @Operation(summary = "Отмена записи")
     @DeleteMapping("/cancel")
     public void cancel(@RequestBody Integer request) {
         orderService.cancelOrder((long) request);
