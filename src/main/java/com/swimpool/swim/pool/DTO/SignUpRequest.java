@@ -3,7 +3,6 @@ package com.swimpool.swim.pool.DTO;
 import java.util.regex.Pattern;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -26,15 +25,15 @@ public class SignUpRequest {
     private String phone;
 
     @Schema(description = "Name user", example = "Jack")
+    @NotBlank(message = "Имя не может быть пустым")
     private String name;
     
     @Schema(description = "Password user", example = "password")
     @Size(max = 255, message = "Длина пароля не должна превышать 255 симаолов")
     private String password;
 
-    @Transient
     private final Pattern VALID_PHONE_NUMBER_REGEX = 
-    Pattern.compile("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}", Pattern.CASE_INSENSITIVE);
+    Pattern.compile("^\\+?\\d{10,15}$");
 
     public SignUpRequest() {
     }
@@ -65,17 +64,17 @@ public class SignUpRequest {
     public String getPhone() {
         return phone;
     }
-  /*   public boolean setPhone(String phone) {
+    public boolean setPhone(String phone) {
         var matcher = VALID_PHONE_NUMBER_REGEX.matcher(phone);
         if (matcher.matches()) {
             this.phone = phone;
             return true;
         }
         return false;
-    } */
-    public void setPhone(String phone){
-        this.phone = phone;
     }
+    /* public void setPhone(String phone){
+        this.phone = phone;
+    } */
 
     public String getName() {
         return name;
