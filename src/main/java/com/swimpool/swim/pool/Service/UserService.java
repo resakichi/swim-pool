@@ -28,7 +28,12 @@ public class UserService {
         if (repository.existsByLogin(user.getUsername())){
             throw new RuntimeException("Пользователь с таким логином существует");
         }
-        
+        checkDuplicate(user);
+        return save(user);
+    }
+
+    private void checkDuplicate(User user){
+
         if (repository.existsByEmail(user.getEmail())){
             throw new RuntimeException("Пользователь с таким email существует");
         }
@@ -36,8 +41,6 @@ public class UserService {
         if (repository.existsByPhone(user.getPhone())){
             throw new RuntimeException("Пользователь с таким телефоном существует");
         }
-
-        return save(user);
     }
 
     public User getByLogin(String login){
@@ -71,7 +74,8 @@ public class UserService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
-
+        
+        checkDuplicate(user);
         save(user);
         return user;
     }

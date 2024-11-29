@@ -3,7 +3,6 @@ package com.swimpool.swim.pool.DTO;
 import java.util.regex.Pattern;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -33,7 +32,6 @@ public class SignUpRequest {
     @Size(max = 255, message = "Длина пароля не должна превышать 255 симаолов")
     private String password;
 
-    @Transient
     private final Pattern VALID_PHONE_NUMBER_REGEX = 
     Pattern.compile("^\\+?\\d{10,15}$");
 

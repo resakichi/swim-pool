@@ -11,7 +11,11 @@ import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 
+import com.swimpool.swim.pool.DTO.OrderRequest;
 import com.swimpool.swim.pool.DTO.SignUpRequest;
+import com.swimpool.swim.pool.Entity.Order;
+import com.swimpool.swim.pool.Service.OrderService;
+
 
 public class SignUpRequestTest {
 
@@ -36,5 +40,13 @@ public class SignUpRequestTest {
         var ldt = date.toLocalDateTime();
         System.out.println(tmp.toString());
         System.out.println(ldt.with(LocalTime.MIN));
+    }
+
+    @Test
+    void requestTest(){
+        LocalDateTime start = LocalDateTime.of(2024, 11, 29, 10, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2024, 11, 29, 20, 0, 0);
+        
+        assertTrue(start.toLocalDate().isEqual(end.toLocalDate()));
     }
 }

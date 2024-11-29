@@ -65,6 +65,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return "{\"id\" = \"" + id + "\", \"date\" = \"" + date + "\", \"user\" = " + user.toString() + "}";
+        return "\"id\" = \"" + id + "\", \"date\" = \"" + date + "\", \"user\" = " + user.toString() ;
     }
 }

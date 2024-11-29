@@ -51,7 +51,7 @@ public class User implements UserDetails{
     private String email;
 
     @OneToMany(mappedBy = "user",
-                fetch = FetchType.LAZY,
+                fetch = FetchType.EAGER,
                 cascade = CascadeType.ALL)
     List<Order> orders = new ArrayList<>();
 

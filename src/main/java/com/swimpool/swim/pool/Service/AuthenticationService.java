@@ -6,7 +6,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.swimpool.swim.pool.DTO.JwtAuthenticationResponse;
 import com.swimpool.swim.pool.DTO.SignInRequest;
 import com.swimpool.swim.pool.DTO.SignUpRequest;
 import com.swimpool.swim.pool.Entity.User;
@@ -26,24 +25,16 @@ public class AuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    /* public AuthenticationService(UserService userService, JwtService jwtService, PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager) {
-        this.userService = userService;
-        this.jwtService = jwtService;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-    } */
-
-    public JwtAuthenticationResponse signUp(SignUpRequest request){
-        var user = new User(request.getLogin(), request.getPassword(), UserRole.USER, 
+    public String signUp(SignUpRequest request){
+        var encodedPassword = passwordEncoder.encode(request.getPassword());
+        var user = new User(request.getLogin(), encodedPassword, UserRole.USER, 
                             request.getName(), request.getPhone(), request.getEmail());
         userService.create(user);
 
-        var jwt = jwtService.generateToken(user);
-        return new JwtAuthenticationResponse(jwt);
+        return "{\"token : \"" + jwtService.generateToken(user) + "\"}";
     }
 
-    public JwtAuthenticationResponse signIn(SignInRequest request){
+    public String signIn(SignInRequest request){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
             request.getLogin(), request.getPassword()));
 
@@ -52,7 +43,6 @@ public class AuthenticationService {
         .loadUserByUsername(request.getLogin());
 
         var jwt = jwtService.generateToken(user);
-        return new JwtAuthenticationResponse(jwt);
-
+        return "{\"token : \"" + jwtService.generateToken(user) + "\"}";
     }
 }

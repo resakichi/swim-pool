@@ -36,14 +36,18 @@ public class ClientController {
     
     @Operation(summary = "Получение данных пользователя")
     @GetMapping("/get")
-    public String getClient(@RequestParam String param) {
+    public String getClient(@RequestParam Integer param) {
         return userService.getById(Long.valueOf(param));
     }
 
     @Operation(summary = "Обновление пользователя")
     @PostMapping("/update")
     public String updateUser(@RequestBody @Valid UpdateUserRequest request) {
-        return userService.updateUser(request).toString();
+        try {
+            return userService.updateUser(request).toString();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
     
 }

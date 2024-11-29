@@ -21,9 +21,9 @@ public class UpdateUserRequest {
     private String phone;
 
     public UpdateUserRequest(
-            @NotBlank(message = "Имя не может быть пустым") String name,
-            @NotBlank(message = "Почта не может быть пустой") @Email(message = "email адрес должен быть в формате user@example.com") String email,
-            @NotBlank(message = "Номер телефона не может быть пустым") String phone) {
+            String name,
+            String email,
+            String phone) {
         this.name = name;
         this.email = email;
         this.phone = phone;
